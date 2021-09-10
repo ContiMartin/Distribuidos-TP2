@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  standard:
+    build: .
+    container_name: "builded_nginx"
+    ports:
+      - "8080:80"
+  
+  builded:
+    image: nginx
+    container_name: "standard_nginx"
+    ports:
+      - "8081:80"
