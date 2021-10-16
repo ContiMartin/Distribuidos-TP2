@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  standard:
+    build: .
+    container_name: "p4_b"
+    volumes:
+      - ./pag/:/usr/share/nginx/html    
+    ports:
+      - "8080:80"
