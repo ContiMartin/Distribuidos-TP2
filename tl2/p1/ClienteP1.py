@@ -45,6 +45,9 @@ class hiloDelReloj(threading.Thread):
                     deriva = -0.7
                 elif dif >= SEGUNDO:
                     deriva = -0.5
+                
+                
+                
                 elif dif > -SEGUNDO and dif < SEGUNDO:
                     deriva = 0
 
