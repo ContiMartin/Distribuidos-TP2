@@ -1,7 +1,6 @@
 version: "3.9"
-
 services:
-  standard:
+  nginx_server_4b:
     build: .
     container_name: "p4_b"
     volumes:
