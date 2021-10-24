@@ -18,15 +18,30 @@ class hiloDelReloj(threading.Thread):
         horaServidorFormat = self.horaServidor.dameHoraServidor()
         fin = time.time()
         offset = fin - inicio
-                       
         format = "%Y-%m-%d %H:%M:%S:%f"
         horaServidor = datetime.strptime(horaServidorFormat, format)
-        
         error = offset/2
-
         horaCalculada = horaServidor + timedelta(seconds = error)        
         return horaCalculada
-        
+
+    def calcularDif(self, dif):
+        if dif >= MINUTO:
+            return -1
+        elif dif >= (MINUTO/2):
+            return -0.7
+        elif dif >= SEGUNDO:
+            return -0.5                    
+        elif dif > -SEGUNDO and dif < SEGUNDO:
+            return 0
+        elif dif <= -MINUTO:
+            return 12
+        elif dif <= -(MINUTO/2):
+            return 7
+        elif dif <= -SEGUNDO:
+            return 0.5
+        else:
+            return 10
+
     def iniciar(self):
         iteracion = 0
         aux = 0
@@ -37,42 +52,16 @@ class hiloDelReloj(threading.Thread):
                 horaServidor = self.algoritmoDeCristian()
                 dif = horaServidor - self.horaCliente
                 dif = dif.total_seconds()
-               
-
-                if dif >= MINUTO:
-                    deriva = -1
-                elif dif >= (MINUTO/2):
-                    deriva = -0.7
-                elif dif >= SEGUNDO:
-                    deriva = -0.5
-                
-                
-                
-                elif dif > -SEGUNDO and dif < SEGUNDO:
-                    deriva = 0
-
-
-
-                elif dif <= -MINUTO:
-                    deriva = 12
-                elif dif <= -(MINUTO/2):
-                    deriva = 7
-                elif dif <= -SEGUNDO:
-                    deriva = 0.5
-                else:
-                    deriva = 10
-
+                deriva = self.calcularDif(dif)
                 d = abs(dif) // 2000
                 aux = d
             else:
                 aux -= 1
-
             time.sleep(1 + deriva)
             self.horaCliente += timedelta(seconds = 1)
             finEjecucion = default_timer()
             total = timedelta(seconds = finEjecucion - inicioDeEjecucion)
             print(f"Hora Cliente: {self.horaCliente} | Diferencia: {dif} | Deriva: {deriva} | N°Iteracion: {iteracion} | Tiempo de ejecucion: {total}")
-
 
 def programaPrincipal():
     # Variable para poder salir del while
@@ -83,7 +72,6 @@ def programaPrincipal():
         #horaLocalDesfasada = datetime(2022, 1, 1, 1, 1, 0)
         horaLocalDesfasada = datetime(2021, 10, 15, 10, 10, 0)
         hilo = hiloDelReloj(horaServidor, horaLocalDesfasada)    
-        
         print(" - - - - - - - -0- - - - - - - -")
         print(" Menu - TP2 Sistemas Distribuidos 2021")
         print(" 1 - Ver Hora Servidor")

@@ -1,0 +1,8 @@
+version: "3.3"
+
+services:
+  app:
+    build: .
+    container_name: "serverEE"
+    ports:
+      - "8085:50051"

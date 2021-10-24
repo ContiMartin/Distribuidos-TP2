@@ -1,28 +1,29 @@
 import ntplib
 from datetime import datetime
+from datetime import timedelta
 import sys
 
 class ClienteNTP:
-    format = "%Y-%m-%d %H:%M:%S%f"
+    format = '2021-%m-%d %H:%M:%S%f'
+    
     def __init__(self, imputNtp):
         self.imputNtp = imputNtp
-
+        
     def conexionNTP(self):
         clienteNTP = ntplib.NTPClient()
         print(f"Servidor NTP Ingresado: {self.imputNtp}")
         print("")
         for x in range(0, 8):
-            var = clienteNTP.request(self.imputNtp, version=2)
-            print("")
+            var1 = clienteNTP.request(self.imputNtp, version=3)
             print(" - - - - - - - -0- - - - - - - -")
             print(f"-              Muestra n°: {x+1}")
-            print(f"- (T1) Tiempo original de la hora del sistema (Servidor): {datetime.fromtimestamp(var.orig_timestamp).strftime(ClienteNTP.format)}")
-            print(f"- (T2) Recibir el timestamp en la hora del sistema (servidor): {datetime.fromtimestamp(var.recv_timestamp).strftime(ClienteNTP.format)}")
-            print(f"- (T3) Transmitir marca de tiempo en la hora del sistema (servidor): {datetime.fromtimestamp(var.tx_timestamp).strftime(ClienteNTP.format)}")
-            print(f"- (T4) Marca de tiempo de destino: {datetime.fromtimestamp(var.dest_timestamp).strftime(ClienteNTP.format)}")
-            print(f"- Marca de tiempo de referencia en la hora del sistema: {datetime.fromtimestamp(var.ref_timestamp).strftime(ClienteNTP.format)}")
-            print(f"- Retraso de ida y vuelta: {var.delay}")
-            print(f"- Offset: {var.offset}")
+            print(f"- (T1) Tiempo original de la hora del sistema (Servidor): {(datetime.fromtimestamp(var1.orig_timestamp).strftime(ClienteNTP.format))}")
+            print(f"- (T2) Recibir el timestamp en la hora del sistema (servidor): {datetime.fromtimestamp(var1.recv_timestamp).strftime(ClienteNTP.format)}")
+            print(f"- (T3) Transmitir marca de tiempo en la hora del sistema (servidor): {datetime.fromtimestamp(var1.tx_timestamp).strftime(ClienteNTP.format)}")
+            print(f"- (T4) Marca de tiempo de destino: {datetime.fromtimestamp(var1.dest_timestamp).strftime(ClienteNTP.format)}")
+            print(f"- Marca de tiempo de referencia en la hora del sistema: {datetime.fromtimestamp(var1.ref_timestamp).strftime(ClienteNTP.format)}")
+            print(f"- Retraso de ida y vuelta: {var1.delay}")
+            print(f"- Offset: {var1.offset}")
             print(" - - - - - - - -0- - - - - - - -")
 
 def programaPrincipal():
@@ -44,7 +45,6 @@ def programaPrincipal():
                 try:
                     print(" - Esperando Servidor NTP..")
                     imputNtp = input()
-                    #server_name = sys.argv[1]
                     clienteNTP = ClienteNTP(imputNtp)
                     clienteNTP.conexionNTP()
                 except IndexError:
@@ -56,7 +56,7 @@ def programaPrincipal():
             else:
                 print("Reimprimir MENU!")
         except ValueError:
-            print("Opción Incorrectas")
+            print("Opción Incorrecta!")
         except KeyboardInterrupt:
             salir = True
             break

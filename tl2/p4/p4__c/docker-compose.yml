@@ -1,0 +1,32 @@
+version: "3"
+
+services: 
+  postgres:
+    image: postgres
+    restart: always
+    build: .
+    container_name: postgres-4c-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/    
+    environment: 
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    ports: 
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin    
+    ports:
+      - "8000:80"
+    depends_on: 
+      - postgres
+volumes:
+  postgres_data:
+  pgadmin_data:

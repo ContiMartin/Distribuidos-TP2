@@ -1,0 +1,8 @@
+version: "3.3"
+
+services:
+  app:
+    build: .
+    container_name: "tp2"
+    ports:
+      - "8085:50051"
